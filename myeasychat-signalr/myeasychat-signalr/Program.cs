@@ -41,9 +41,6 @@ app.UseRouting();
 //app.UseAuthorization();
 
 app.MapControllers();
-app.MapHub<EasyChatHub>("/EasyChatHub", options =>
-{
-    options.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling /*| HttpTransportType.ServerSentEvents*/;
-});
+app.MapHub<EasyChatHub>("/EasyChatHub");
 
 app.Run();
