@@ -15,3 +15,6 @@ To:
 you should see that Signal-R is indeed working, but it does not work with websockets as transport.
 
 you will have to change the IP-Adresses, in the ChatPageViewModel files, to your Server-IP.
+
+
+A Link to the original Project [here](https://github.com/prashantvc/easychat-service)
