@@ -12,30 +12,18 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSignalR().AddHubOptions<EasyChatHub>(options =>
 {
-    options.MaximumReceiveMessageSize = 1 * 1024 * 1024 * 1024; // 1 GB
+    options.MaximumReceiveMessageSize = 1 * 1024 * 1024; // 1 MB
     options.MaximumParallelInvocationsPerClient = 32;
     options.KeepAliveInterval = new TimeSpan(0, 0, 0, 5);
     options.ClientTimeoutInterval = new TimeSpan(0, 0, 0, 10);
     options.EnableDetailedErrors = true;
 
 });
+
+builder.Logging.AddFilter("Microsoft.AspNetCore.SignalR", LogLevel.Trace);
+builder.Logging.AddFilter("Microsoft.AspNetCore.Http.Connections", LogLevel.Trace);
+
 //builder.WebHost.UseUrls("http://*:5000");
-builder.WebHost.ConfigureLogging(logging =>
-{
-    logging.AddFilter("Microsoft.AspNetCore.SignalR", LogLevel.Trace);
-    logging.AddFilter("Microsoft.AspNetCore.Http.Connections", LogLevel.Trace);
-});
-
-builder.Host.ConfigureLogging(logging =>
-{
-    logging.AddFilter("Microsoft.AspNetCore.SignalR", LogLevel.Trace);
-    logging.AddFilter("Microsoft.AspNetCore.Http.Connections", LogLevel.Trace);
-});
-
-
-
-
-
 
 var app = builder.Build();
 
@@ -47,26 +35,15 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseWebSockets();
-
-//app.Run(async (context) =>
-//{
-//    await context.Response.WriteAsync("Easy chat service");
-
-//});
 app.UseHttpsRedirection();
 app.UseRouting();
 
 //app.UseAuthorization();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-    endpoints.MapHub<EasyChatHub>("/EasyChatHub", options =>
-    {
-        options.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling /*| HttpTransportType.ServerSentEvents*/;
-    });
-});
-
 app.MapControllers();
+app.MapHub<EasyChatHub>("/EasyChatHub", options =>
+{
+    options.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling /*| HttpTransportType.ServerSentEvents*/;
+});
 
 app.Run();
