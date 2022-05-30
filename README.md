@@ -17,4 +17,4 @@ you should see that Signal-R is indeed working, but it does not work with websoc
 you will have to change the IP-Adresses, in the ChatPageViewModel files, to your Server-IP.
 
 
-A Link to the original Project [here](https://github.com/prashantvc/easychat-service)
+A Link to the original project [here](https://github.com/prashantvc/easychat-service)
